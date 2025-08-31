@@ -202,16 +202,16 @@ function initializeProductGrid() {
         tile.className = 'product-tile';
         tile.innerHTML = `
             <div class="product-image">
-                <img src="${product.image}" alt="${product.title}" />
-                <div class="product-overlay">
+                <img src="${product.image}" alt="${product.title}" onclick="openGallery('${product.image}', '${product.title}')" style="cursor: pointer;" />
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">${product.title}</h3>
+                <div class="price-cart-container">
+                    <p class="product-price">$${product.price}</p>
                     <button class="add-to-cart-btn" onclick="addToCart(${product.id})">
                         Add to Cart
                     </button>
                 </div>
-            </div>
-            <div class="product-info">
-                <h3 class="product-title">${product.title}</h3>
-                <p class="product-price">$${product.price}</p>
                 <p class="product-description">${product.description}</p>
             </div>
         `;
@@ -613,6 +613,54 @@ setInterval(() => {
     }
 }, 2000);
 
+// Gallery functionality
+function openGallery(imageSrc, imageTitle) {
+    console.log('🖼️ Opening gallery for:', imageTitle);
+    
+    const galleryModal = document.getElementById('gallery-modal');
+    const galleryImage = document.getElementById('gallery-image');
+    const galleryCaption = document.getElementById('gallery-caption');
+    
+    if (galleryModal && galleryImage && galleryCaption) {
+        galleryImage.src = imageSrc;
+        galleryImage.alt = imageTitle;
+        galleryCaption.textContent = imageTitle;
+        galleryModal.classList.add('open');
+        
+        // Add click handler to image to close gallery
+        galleryImage.onclick = closeGallery;
+        
+        // Prevent body scroll when gallery is open
+        document.body.style.overflow = 'hidden';
+    }
+}
 
+function closeGallery() {
+    console.log('🖼️ Closing gallery');
+    
+    const galleryModal = document.getElementById('gallery-modal');
+    
+    if (galleryModal) {
+        galleryModal.classList.remove('open');
+        
+        // Restore body scroll
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// Add keyboard support for gallery
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const galleryModal = document.getElementById('gallery-modal');
+        if (galleryModal && galleryModal.classList.contains('open')) {
+            closeGallery();
+        }
+        
+        const cartSidebar = document.getElementById('cart-sidebar');
+        if (cartSidebar && cartSidebar.classList.contains('open')) {
+            toggleCart();
+        }
+    }
+});
 
 console.log('🎨 Burnt Offerings JavaScript loaded successfully!');
