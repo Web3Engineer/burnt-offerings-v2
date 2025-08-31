@@ -202,7 +202,7 @@ function initializeProductGrid() {
         tile.className = 'product-tile';
         tile.innerHTML = `
             <div class="product-image">
-                <img src="${product.image}" alt="${product.title}" onclick="openGallery('${product.image}', '${product.title}')" style="cursor: pointer;" />
+                <img src="${product.image}" alt="${product.title}" onclick="openGallery(\`${product.image}\`, \`${product.title}\`)" style="cursor: pointer;" />
             </div>
             <div class="product-info">
                 <h3 class="product-title">${product.title}</h3>
